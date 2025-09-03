@@ -13,19 +13,19 @@
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
-  
+
   &.default {
     @include m.dialog-variant(v.$color-gray-300);
   }
-  
+
   &.danger {
     @include m.dialog-variant(v.$color-danger);
   }
-  
+
   &.success {
     @include m.dialog-variant(v.$color-success);
   }
-  
+
   &.info {
     @include m.dialog-variant(v.$color-info);
   }
@@ -72,21 +72,21 @@
   .overlay {
     padding: v.$spacing-sm;
   }
-  
+
   .dialog {
     max-width: none;
     margin: 0;
   }
-  
+
   .header {
     padding: v.$spacing-lg;
   }
-  
+
   .footer {
     padding: v.$spacing-md v.$spacing-lg v.$spacing-lg v.$spacing-lg;
     flex-direction: column-reverse;
   }
-  
+
   .button {
     width: 100%;
   }

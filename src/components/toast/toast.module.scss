@@ -10,7 +10,7 @@
   flex-direction: column;
   gap: v.$spacing-sm;
   max-width: 400px;
-  
+
   @include m.mobile {
     left: v.$spacing-sm;
     right: v.$spacing-sm;
@@ -28,27 +28,27 @@
   gap: v.$spacing-md;
   transition: v.$transition-slow;
   @include m.toast-enter;
-  
+
   &.visible {
     @include m.toast-visible;
   }
-  
+
   &.hidden {
     @include m.toast-exit;
   }
-  
+
   &.default {
     @include m.toast-kind-border(v.$color-gray-500);
   }
-  
+
   &.success {
     @include m.toast-kind-border(v.$color-success);
   }
-  
+
   &.error {
     @include m.toast-kind-border(v.$color-danger);
   }
-  
+
   &.info {
     @include m.toast-kind-border(v.$color-info);
   }
@@ -85,11 +85,11 @@
   justify-content: center;
   flex-shrink: 0;
   transition: v.$transition-base;
-  
+
   &:hover {
     color: v.$color-gray-500;
   }
-  
+
   &:focus {
     outline: none;
     color: v.$color-gray-600;
