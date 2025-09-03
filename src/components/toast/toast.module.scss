@@ -1,0 +1,97 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.container {
+  position: fixed;
+  bottom: v.$spacing-lg;
+  right: v.$spacing-lg;
+  z-index: v.$z-index-toast;
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-sm;
+  max-width: 400px;
+  
+  @include m.mobile {
+    left: v.$spacing-sm;
+    right: v.$spacing-sm;
+    max-width: none;
+  }
+}
+
+.toast {
+  background: v.$color-white;
+  border-radius: v.$border-radius-base;
+  box-shadow: v.$shadow-lg;
+  padding: v.$spacing-lg;
+  display: flex;
+  align-items: flex-start;
+  gap: v.$spacing-md;
+  transition: v.$transition-slow;
+  @include m.toast-enter;
+  
+  &.visible {
+    @include m.toast-visible;
+  }
+  
+  &.hidden {
+    @include m.toast-exit;
+  }
+  
+  &.default {
+    @include m.toast-kind-border(v.$color-gray-500);
+  }
+  
+  &.success {
+    @include m.toast-kind-border(v.$color-success);
+  }
+  
+  &.error {
+    @include m.toast-kind-border(v.$color-danger);
+  }
+  
+  &.info {
+    @include m.toast-kind-border(v.$color-info);
+  }
+}
+
+.content {
+  flex: 1;
+}
+
+.title {
+  font-weight: v.$font-weight-semibold;
+  color: v.$color-gray-900;
+  margin-bottom: v.$spacing-xs;
+}
+
+.description {
+  color: v.$color-gray-500;
+  font-size: v.$font-size-sm;
+  line-height: 1.5;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: v.$color-gray-400;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: v.$transition-base;
+  
+  &:hover {
+    color: v.$color-gray-500;
+  }
+  
+  &:focus {
+    outline: none;
+    color: v.$color-gray-600;
+  }
+}
