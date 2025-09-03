@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { getPortalRoot } from '../../utils/portal';
+import { getPortalRoot } from '@/utils/portal';
 
 interface PortalProps {
   children: ReactNode;
 }
 
-export const Portal = ({ children }: PortalProps) => {
+export default function Portal({ children }: PortalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -20,4 +20,4 @@ export const Portal = ({ children }: PortalProps) => {
   }
 
   return createPortal(children, getPortalRoot());
-};
+}

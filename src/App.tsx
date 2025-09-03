@@ -105,12 +105,10 @@ await alert({
   );
 }
 
-function App() {
+export default function App() {
   return (
     <OkCancelProvider>
       <DemoComponent />
     </OkCancelProvider>
   );
 }
-
-export default App;

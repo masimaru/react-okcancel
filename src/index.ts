@@ -1,5 +1,5 @@
 // Main library entry point
-export { OkCancelProvider } from './provider';
+export { default as OkCancelProvider } from './provider';
 export { useOkCancel } from './hooks';
 export * from './types';
 

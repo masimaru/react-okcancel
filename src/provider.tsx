@@ -8,7 +8,7 @@ import type {
   Theme,
 } from './types';
 import { OkCancelContext } from './context';
-import { Dialog } from './components/dialog/dialog';
+import Dialog from './components/dialog';
 // Toast feature removed
 
 // Default theme configuration
@@ -27,7 +27,7 @@ const defaultTheme: Theme = {
   styles: {},
 };
 
-export const OkCancelProvider = ({ children, theme = {} }: OkCancelProviderProps) => {
+export default function OkCancelProvider({ children, theme = {} }: OkCancelProviderProps) {
   const [dialogState, setDialogState] = useState<DialogState>({ type: null });
   const previousActiveElementRef = useRef<Element | null>(null); // dialog를 열기 직전의 포커스 대상
 
@@ -136,4 +136,4 @@ export const OkCancelProvider = ({ children, theme = {} }: OkCancelProviderProps
       )}
     </OkCancelContext.Provider>
   );
-};
+}

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import type { DialogState, Theme } from '../../types';
-import { Portal } from '../portal/portal';
+import type { DialogState, Theme } from '@/types';
+import Portal from './portal';
 import styles from './dialog.module.scss';
 
 interface DialogProps extends DialogState {
@@ -8,7 +8,7 @@ interface DialogProps extends DialogState {
   onClose: (confirmed: boolean) => void;
 }
 
-export const Dialog = ({
+export default function Dialog({
   type,
   title,
   description,
@@ -20,7 +20,7 @@ export const Dialog = ({
   styles: inlineStyles = {},
   theme,
   onClose,
-}: DialogProps) => {
+}: DialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -152,4 +152,4 @@ export const Dialog = ({
       </div>
     </Portal>
   );
-};
+}
