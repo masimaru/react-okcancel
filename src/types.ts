@@ -2,8 +2,6 @@ import type { ReactNode, CSSProperties } from 'react';
 
 export type DialogKind = 'default' | 'danger' | 'success' | 'info';
 
-export type ToastKind = 'default' | 'success' | 'error' | 'info';
-
 export type CloseReason = 'confirm' | 'cancel' | 'esc' | 'overlay' | 'system';
 
 export interface ClassNames {
@@ -16,8 +14,6 @@ export interface ClassNames {
   button: string;
   buttonPrimary: string;
   buttonSecondary: string;
-  toast: string;
-  toastContainer: string;
 }
 
 export interface InlineStyles {
@@ -30,8 +26,6 @@ export interface InlineStyles {
   button?: CSSProperties;
   buttonPrimary?: CSSProperties;
   buttonSecondary?: CSSProperties;
-  toast?: CSSProperties;
-  toastContainer?: CSSProperties;
 }
 
 export interface Theme {
@@ -60,25 +54,6 @@ export interface AlertOptions extends BaseDialogOptions {
   closeOnEsc?: boolean;
 }
 
-export interface ToastOptions {
-  title?: ReactNode;
-  description?: ReactNode;
-  kind?: ToastKind;
-  autoDismiss?: number;
-  classNames?: Partial<ClassNames>;
-  styles?: Partial<InlineStyles>;
-}
-
-export interface Toast {
-  id: number;
-  kind: ToastKind;
-  title?: ReactNode;
-  description?: ReactNode;
-  autoDismiss?: number;
-  classNames?: Partial<ClassNames>;
-  styles?: Partial<InlineStyles>;
-}
-
 export interface DialogState {
   type: 'confirm' | 'alert' | null;
   title?: ReactNode;
@@ -96,12 +71,6 @@ export interface DialogState {
 export interface OkCancelContextValue {
   confirm: (options: ConfirmOptions) => Promise<boolean>;
   alert: (options: AlertOptions) => Promise<void>;
-  toast: {
-    success: (options: Omit<ToastOptions, 'kind'>) => void;
-    error: (options: Omit<ToastOptions, 'kind'>) => void;
-    info: (options: Omit<ToastOptions, 'kind'>) => void;
-    custom: (options: ToastOptions) => void;
-  };
 }
 
 export interface OkCancelProviderProps {

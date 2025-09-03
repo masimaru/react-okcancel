@@ -47,22 +47,6 @@
   border: 1px solid $color;
 }
 
-// Toast animations
-@mixin toast-enter {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-@mixin toast-visible {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-@mixin toast-exit {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
 // Responsive breakpoints
 @mixin mobile {
   @media (width <= 640px) {
@@ -86,9 +70,4 @@
   justify-content: center;
   z-index: v.$z-index-overlay;
   padding: v.$spacing-lg;
-}
-
-// Toast kind indicators
-@mixin toast-kind-border($color) {
-  border-left: 4px solid $color;
 }

@@ -3,15 +3,13 @@ import type {
   OkCancelContextValue,
   OkCancelProviderProps,
   DialogState,
-  Toast,
   ConfirmOptions,
   AlertOptions,
-  ToastOptions,
   Theme,
 } from './types';
 import { OkCancelContext } from './context';
 import { Dialog } from './components/dialog/dialog';
-import { ToastContainer } from './components/toast/toast-container';
+// Toast feature removed
 
 // Default theme configuration
 const defaultTheme: Theme = {
@@ -25,18 +23,13 @@ const defaultTheme: Theme = {
     button: '',
     buttonPrimary: '',
     buttonSecondary: '',
-    toast: '',
-    toastContainer: '',
   },
   styles: {},
 };
 
-let toastIdCounter = 0;
-
 export const OkCancelProvider = ({ children, theme = {} }: OkCancelProviderProps) => {
   const [dialogState, setDialogState] = useState<DialogState>({ type: null });
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const previousActiveElementRef = useRef<Element | null>(null);
+  const previousActiveElementRef = useRef<Element | null>(null); // dialog를 열기 직전의 포커스 대상
 
   // Merge user theme with defaults
   const mergedTheme: Theme = {
@@ -101,39 +94,9 @@ export const OkCancelProvider = ({ children, theme = {} }: OkCancelProviderProps
     });
   }, []);
 
-  const addToast = useCallback((kind: Toast['kind'], options: ToastOptions) => {
-    const id = ++toastIdCounter;
-    const toast: Toast = {
-      id,
-      kind,
-      title: options.title,
-      description: options.description,
-      autoDismiss: options.autoDismiss ?? 3000,
-      classNames: options.classNames,
-      styles: options.styles,
-    };
-
-    setToasts((prev) => [...prev, toast]);
-
-    // Auto dismiss if configured
-    if (toast.autoDismiss && toast.autoDismiss > 0) {
-      setTimeout(() => {
-        setToasts((prev) => prev.filter((t) => t.id !== id));
-      }, toast.autoDismiss);
-    }
-  }, []);
-
-  const toast = {
-    success: (options: Omit<ToastOptions, 'kind'>) => addToast('success', options),
-    error: (options: Omit<ToastOptions, 'kind'>) => addToast('error', options),
-    info: (options: Omit<ToastOptions, 'kind'>) => addToast('info', options),
-    custom: (options: ToastOptions) => addToast(options.kind || 'default', options),
-  };
-
   const contextValue: OkCancelContextValue = {
     confirm,
     alert,
-    toast,
   };
 
   const handleDialogClose = useCallback(
@@ -149,10 +112,6 @@ export const OkCancelProvider = ({ children, theme = {} }: OkCancelProviderProps
     },
     [dialogState, closeDialog],
   );
-
-  const removeToast = useCallback((id: number) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  }, []);
 
   // Handle keyboard events for ESC key
   useEffect(() => {
@@ -175,7 +134,6 @@ export const OkCancelProvider = ({ children, theme = {} }: OkCancelProviderProps
       {dialogState.type && (
         <Dialog {...dialogState} theme={mergedTheme} onClose={handleDialogClose} />
       )}
-      <ToastContainer toasts={toasts} theme={mergedTheme} onRemove={removeToast} />
     </OkCancelContext.Provider>
   );
 };

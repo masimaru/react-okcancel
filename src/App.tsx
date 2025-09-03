@@ -3,7 +3,7 @@ import { OkCancelProvider, useOkCancel } from './index';
 import './App.scss';
 
 function DemoComponent() {
-  const { confirm, alert, toast } = useOkCancel();
+  const { confirm, alert } = useOkCancel();
   const [result, setResult] = useState<string>('');
 
   const handleConfirm = async () => {
@@ -24,40 +24,7 @@ function DemoComponent() {
     setResult('알림이 표시되었습니다.');
   };
 
-  const handleToastSuccess = () => {
-    toast.success({
-      title: '성공',
-      description: '작업이 완료되었습니다.',
-    });
-    setResult('성공 토스트가 표시되었습니다.');
-  };
-
-  const handleToastError = () => {
-    toast.error({
-      title: '오류 발생',
-      description: '요청을 처리하는 중 문제가 발생했습니다.',
-    });
-    setResult('오류 토스트가 표시되었습니다.');
-  };
-
-  const handleToastInfo = () => {
-    toast.info({
-      title: '정보',
-      description: '새로운 업데이트가 사용 가능합니다.',
-    });
-    setResult('정보 토스트가 표시되었습니다.');
-  };
-
-  const handleMultipleToasts = () => {
-    toast.success({ title: '첫 번째', description: '첫 번째 토스트입니다.' });
-    setTimeout(() => {
-      toast.error({ title: '두 번째', description: '두 번째 토스트입니다.' });
-    }, 500);
-    setTimeout(() => {
-      toast.info({ title: '세 번째', description: '세 번째 토스트입니다.' });
-    }, 1000);
-    setResult('여러 토스트가 순차적으로 표시됩니다.');
-  };
+  // 토스트 기능 제거됨
 
   return (
     <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
@@ -79,16 +46,7 @@ function DemoComponent() {
         </button>
       </div>
 
-      <div style={{ marginBottom: '2rem' }}>
-        <h2>토스트 알림 (Toast)</h2>
-        <p>비차단형 피드백을 제공합니다. 자동으로 사라집니다.</p>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          <button onClick={handleToastSuccess}>성공 토스트</button>
-          <button onClick={handleToastError}>오류 토스트</button>
-          <button onClick={handleToastInfo}>정보 토스트</button>
-          <button onClick={handleMultipleToasts}>여러 토스트</button>
-        </div>
-      </div>
+      {/* 토스트 데모 제거됨 */}
 
       {result && (
         <div
@@ -125,7 +83,7 @@ function DemoComponent() {
 </OkCancelProvider>
 
 // 컴포넌트에서 사용
-const { confirm, alert, toast } = useOkCancel();
+const { confirm, alert } = useOkCancel();
 
 // 확인 다이얼로그
 const confirmed = await confirm({
@@ -140,9 +98,7 @@ await alert({
   description: '작업이 완료되었습니다.'
 });
 
-// 토스트
-toast.success({ title: '성공!', description: '저장되었습니다.' });
-toast.error({ title: '오류', description: '실패했습니다.' });`}
+`}
         </pre>
       </div>
     </div>
