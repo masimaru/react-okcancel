@@ -62,11 +62,10 @@ export default function OkCancelProvider({ children, theme = {} }: OkCancelProvi
         type: 'confirm',
         title: options.title,
         description: options.description,
-        kind: options.kind || 'default',
         confirmText: options.confirmText || '확인',
         cancelText: options.cancelText || '취소',
-        closeOnOverlay: options.closeOnOverlay ?? true,
-        closeOnEsc: options.closeOnEsc ?? true,
+        canCloseOnOverlay: options.canCloseOnOverlay ?? true,
+        canCloseOnEsc: options.canCloseOnEsc ?? true,
         classNames: options.classNames,
         styles: options.styles,
         resolve: resolve as (value: boolean | void) => void,
@@ -83,10 +82,9 @@ export default function OkCancelProvider({ children, theme = {} }: OkCancelProvi
         type: 'alert',
         title: options.title,
         description: options.description,
-        kind: options.kind || 'default',
         confirmText: options.confirmText || '확인',
-        closeOnOverlay: options.closeOnOverlay ?? false,
-        closeOnEsc: options.closeOnEsc ?? false,
+        canCloseOnOverlay: options.canCloseOnOverlay ?? false,
+        canCloseOnEsc: options.canCloseOnEsc ?? false,
         classNames: options.classNames,
         styles: options.styles,
         resolve: resolve as (value: boolean | void) => void,
@@ -100,10 +98,10 @@ export default function OkCancelProvider({ children, theme = {} }: OkCancelProvi
   };
 
   const handleDialogClose = useCallback(
-    (confirmed: boolean) => {
+    (isConfirmed: boolean) => {
       if (dialogState.resolve) {
         if (dialogState.type === 'confirm') {
-          dialogState.resolve(confirmed);
+          dialogState.resolve(isConfirmed);
         } else {
           dialogState.resolve();
         }
@@ -116,7 +114,7 @@ export default function OkCancelProvider({ children, theme = {} }: OkCancelProvi
   // Handle keyboard events for ESC key
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && dialogState.type && dialogState.closeOnEsc) {
+      if (event.key === 'Escape' && dialogState.type && dialogState.canCloseOnEsc) {
         event.preventDefault();
         handleDialogClose(false);
       }

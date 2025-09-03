@@ -5,17 +5,16 @@ import styles from './dialog.module.scss';
 
 interface DialogProps extends DialogState {
   theme: Theme;
-  onClose: (confirmed: boolean) => void;
+  onClose: (isConfirmed: boolean) => void;
 }
 
 export default function Dialog({
   type,
   title,
   description,
-  kind = 'default',
   confirmText,
   cancelText,
-  closeOnOverlay,
+  canCloseOnOverlay,
   classNames = {},
   styles: inlineStyles = {},
   theme,
@@ -31,7 +30,7 @@ export default function Dialog({
   }, []);
 
   const handleOverlayClick = (event: React.MouseEvent) => {
-    if (event.target === event.currentTarget && closeOnOverlay) {
+    if (event.target === event.currentTarget && canCloseOnOverlay) {
       onClose(false);
     }
   };
@@ -44,9 +43,6 @@ export default function Dialog({
     onClose(false);
   };
 
-  const isDanger = kind === 'danger';
-  const role = isDanger ? 'alertdialog' : 'dialog';
-
   // Combine CSS Module classes with theme classes
   const getClassName = (baseClass: keyof typeof styles, themeKey: keyof Theme['classNames']) => {
     return [styles[baseClass], theme.classNames[themeKey], classNames[themeKey]]
@@ -54,7 +50,7 @@ export default function Dialog({
       .join(' ');
   };
 
-  const dialogClassName = [styles.dialog, styles[kind], theme.classNames.dialog, classNames.dialog]
+  const dialogClassName = [styles.dialog, theme.classNames.dialog, classNames.dialog]
     .filter(Boolean)
     .join(' ');
 
@@ -70,7 +66,7 @@ export default function Dialog({
           ref={dialogRef}
           className={dialogClassName}
           style={{ ...theme.styles.dialog, ...inlineStyles.dialog }}
-          role={role}
+          role="dialog"
           aria-modal="true"
           aria-labelledby={title ? 'okcancel-title' : undefined}
           aria-describedby={description ? 'okcancel-description' : undefined}

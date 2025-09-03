@@ -1,9 +1,5 @@
 import type { ReactNode, CSSProperties } from 'react';
 
-export type DialogKind = 'default' | 'danger' | 'success' | 'info';
-
-export type CloseReason = 'confirm' | 'cancel' | 'esc' | 'overlay' | 'system';
-
 export interface ClassNames {
   overlay: string;
   dialog: string;
@@ -36,7 +32,6 @@ export interface Theme {
 export interface BaseDialogOptions {
   title?: ReactNode;
   description?: ReactNode;
-  kind?: DialogKind;
   classNames?: Partial<ClassNames>;
   styles?: Partial<InlineStyles>;
 }
@@ -44,25 +39,24 @@ export interface BaseDialogOptions {
 export interface ConfirmOptions extends BaseDialogOptions {
   confirmText?: ReactNode;
   cancelText?: ReactNode;
-  closeOnOverlay?: boolean;
-  closeOnEsc?: boolean;
+  canCloseOnOverlay?: boolean;
+  canCloseOnEsc?: boolean;
 }
 
 export interface AlertOptions extends BaseDialogOptions {
   confirmText?: ReactNode;
-  closeOnOverlay?: boolean;
-  closeOnEsc?: boolean;
+  canCloseOnOverlay?: boolean;
+  canCloseOnEsc?: boolean;
 }
 
 export interface DialogState {
   type: 'confirm' | 'alert' | null;
   title?: ReactNode;
   description?: ReactNode;
-  kind?: DialogKind;
   confirmText?: ReactNode;
   cancelText?: ReactNode;
-  closeOnOverlay?: boolean;
-  closeOnEsc?: boolean;
+  canCloseOnOverlay?: boolean;
+  canCloseOnEsc?: boolean;
   classNames?: Partial<ClassNames>;
   styles?: Partial<InlineStyles>;
   resolve?: (value: boolean | void) => void;
