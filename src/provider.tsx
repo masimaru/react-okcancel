@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import type {
   OkCancelContextValue,
   OkCancelProviderProps,
@@ -8,27 +8,12 @@ import type {
 } from './types';
 import { OkCancelContext } from './context';
 import Dialog from './components/dialog';
-// Toast feature removed
 
 export default function OkCancelProvider({ children }: OkCancelProviderProps) {
   const [dialogState, setDialogState] = useState<DialogState>({ type: null });
-  const previousActiveElementRef = useRef<Element | null>(null); // dialog를 열기 직전의 포커스 대상
-
-  const closeDialog = useCallback(() => {
-    setDialogState({ type: null });
-
-    // Restore focus to previously active element
-    if (previousActiveElementRef.current) {
-      (previousActiveElementRef.current as HTMLElement).focus?.();
-      previousActiveElementRef.current = null;
-    }
-  }, []);
 
   const confirm = useCallback((options: ConfirmOptions): Promise<boolean> => {
     return new Promise((resolve) => {
-      // Store current active element for focus restoration
-      previousActiveElementRef.current = document.activeElement;
-
       setDialogState({
         type: 'confirm',
         title: options.title,
@@ -44,9 +29,6 @@ export default function OkCancelProvider({ children }: OkCancelProviderProps) {
 
   const alert = useCallback((options: AlertOptions): Promise<void> => {
     return new Promise((resolve) => {
-      // Store current active element for focus restoration
-      previousActiveElementRef.current = document.activeElement;
-
       setDialogState({
         type: 'alert',
         title: options.title,
@@ -59,24 +41,23 @@ export default function OkCancelProvider({ children }: OkCancelProviderProps) {
     });
   }, []);
 
-  const contextValue: OkCancelContextValue = {
-    confirm,
-    alert,
-  };
-
-  const handleDialogClose = useCallback(
-    (isConfirmed: boolean) => {
-      if (dialogState.resolve) {
-        if (dialogState.type === 'confirm') {
-          dialogState.resolve(isConfirmed);
-        } else {
-          dialogState.resolve();
-        }
-      }
-      closeDialog();
-    },
-    [dialogState, closeDialog],
+  const contextValue = useMemo<OkCancelContextValue>(
+    () => ({
+      confirm,
+      alert,
+    }),
+    [confirm, alert],
   );
+
+  const handleDialogClose = useCallback((isConfirmed: boolean) => {
+    setDialogState((prev) => {
+      if (!prev.resolve) return prev;
+
+      const result = prev.type === 'confirm' ? isConfirmed : undefined;
+      prev.resolve(result);
+      return { type: null };
+    });
+  }, []);
 
   // Handle keyboard events for ESC key
   useEffect(() => {
