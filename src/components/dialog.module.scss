@@ -1,77 +1,88 @@
-@use '@/styles/variables' as v;
-@use '@/styles/mixins' as m;
-
 .overlay {
-  @include m.overlay-base;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--okcancel-z-index);
+  background-color: var(--okcancel-overlay-bg);
+
+  * {
+    box-sizing: border-box;
+  }
 }
 
 .dialog {
-  background: v.$color-white;
-  border-radius: v.$border-radius-base;
-  box-shadow: v.$shadow-xl;
-  max-width: 500px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-}
+  background: var(--okcancel-dialog-bg);
+  border-radius: var(--okcancel-dialog-border-radius);
+  box-shadow: var(--okcancel-dialog-shadow);
+  max-width: var(--okcancel-dialog-max-width);
+  min-width: var(--okcancel-dialog-min-width);
+  max-height: var(--okcancel-dialog-max-height);
+  min-height: var(--okcancel-dialog-min-height);
+  width: var(--okcancel-dialog-width);
+  height: var(--okcancel-dialog-height);
+  border: var(--okcancel-dialog-border);
+  padding: var(--okcancel-dialog-padding);
 
-.header {
-  padding: v.$spacing-xl v.$spacing-xl v.$spacing-lg v.$spacing-xl;
-}
+  .content {
+    display: flex;
+    flex-direction: var(--okcancel-content-flex-direction);
+    justify-content: var(--okcancel-content-justify-content);
+    align-items: var(--okcancel-content-align-items);
+    gap: var(--okcancel-content-gap);
+    padding: var(--okcancel-content-padding);
+    height: var(--okcancel-content-height);
+    max-height: var(--okcancel-content-max-height);
+    min-height: var(--okcancel-content-min-height);
 
-.title {
-  margin: 0 0 v.$spacing-sm;
-  font-size: v.$font-size-lg;
-  font-weight: v.$font-weight-semibold;
-  color: v.$color-gray-900;
-}
+    .title {
+      font-size: var(--okcancel-title-font-size);
+      font-weight: var(--okcancel-title-font-weight);
+      color: var(--okcancel-title-color);
+    }
 
-.description {
-  margin: 0;
-  color: v.$color-gray-500;
-  line-height: 1.5;
-}
-
-.footer {
-  padding: v.$spacing-lg v.$spacing-xl v.$spacing-xl v.$spacing-xl;
-  display: flex;
-  justify-content: flex-end;
-  gap: v.$spacing-md;
-}
-
-.button {
-  @include m.button-base;
-}
-
-.button-primary {
-  @include m.button-primary;
-}
-
-.button-secondary {
-  @include m.button-secondary;
-}
-
-// Responsive styles
-@include m.mobile {
-  .overlay {
-    padding: v.$spacing-sm;
+    .description {
+      font-size: var(--okcancel-description-font-size);
+      font-weight: var(--okcancel-description-font-weight);
+      color: var(--okcancel-description-color);
+    }
   }
 
-  .dialog {
-    max-width: none;
-    margin: 0;
-  }
+  .btn-box {
+    display: flex;
+    flex-direction: var(--okcancel-btn-box-flex-direction);
+    justify-content: var(--okcancel-btn-box-justify-content);
+    align-items: var(--okcancel-btn-box-align-items);
+    gap: var(--okcancel-btn-box-gap);
+    padding: var(--okcancel-btn-box-padding);
+    height: var(--okcancel-btn-box-height);
 
-  .header {
-    padding: v.$spacing-lg;
-  }
+    button {
+      border: var(--okcancel-button-border);
+      border-radius: var(--okcancel-button-border-radius);
+      box-shadow: var(--okcancel-button-box-shadow);
+      padding: var(--okcancel-button-padding);
+      font-size: var(--okcancel-button-font-size);
+      font-weight: var(--okcancel-button-font-weight);
+      cursor: pointer;
+      min-width: var(--okcancel-button-min-width);
+      max-width: var(--okcancel-button-max-width);
+      width: var(--okcancel-button-width);
+      height: var(--okcancel-button-height);
+      flex: var(--okcancel-button-flex);
+    }
 
-  .footer {
-    padding: v.$spacing-md v.$spacing-lg v.$spacing-lg v.$spacing-lg;
-    flex-direction: column-reverse;
-  }
+    .button-primary {
+      background-color: var(--okcancel-button-primary-bg);
+      color: var(--okcancel-button-primary-color);
+      border: var(--okcancel-button-primary-border);
+    }
 
-  .button {
-    width: 100%;
+    .button-secondary {
+      background-color: var(--okcancel-button-secondary-bg);
+      color: var(--okcancel-button-secondary-color);
+      border: var(--okcancel-button-secondary-border);
+    }
   }
 }

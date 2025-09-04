@@ -1,18 +1,7 @@
-// Main SCSS entry point
-@use './variables' as v;
-@use './mixins' as m;
-
-// Import component styles if needed globally
-// Individual components use CSS Modules, but we can include
-// any global styles here if required
-
-// Reset some default styles for better consistency
-* {
-  box-sizing: border-box;
-}
+@use './variables';
 
 // Ensure proper stacking context for portal elements
 #okcancel-portal-root {
   position: relative;
-  z-index: v.$z-index-overlay;
+  z-index: var(--okcancel-z-index);
 }

@@ -1,55 +1,74 @@
-// Color variables
-$color-white: #fff;
-$color-black: #111827;
-$color-gray-50: #f9fafb;
-$color-gray-100: #f3f4f6;
-$color-gray-300: #d1d5db;
-$color-gray-400: #9ca3af;
-$color-gray-500: #6b7280;
-$color-gray-600: #374151;
-$color-gray-700: #1f2937;
-$color-gray-900: #111827;
+// CSS Variables for customization
+:root {
+  /* Dialog */
+  --okcancel-dialog-bg: #fff;
+  --okcancel-dialog-border-radius: 8px;
+  --okcancel-dialog-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
+  --okcancel-dialog-max-width: none;
+  --okcancel-dialog-min-width: none;
+  --okcancel-dialog-max-height: none;
+  --okcancel-dialog-min-height: none;
+  --okcancel-dialog-width: 500px;
+  --okcancel-dialog-height: max-content;
+  --okcancel-dialog-padding: 16px 24px;
+  --okcancel-dialog-border: none;
 
-// State colors
-$color-danger: #ef4444;
-$color-success: #10b981;
-$color-info: #3b82f6;
+  /* Dialog content */
+  --okcancel-content-padding: none;
+  --okcancel-content-gap: 8px;
+  --okcancel-content-flex-direction: column;
+  --okcancel-content-justify-content: center;
+  --okcancel-content-align-items: unset;
+  --okcancel-content-height: 100px;
+  --okcancel-content-max-height: none;
+  --okcancel-content-min-height: none;
 
-// Border radius
-$border-radius-base: 8px;
-$border-radius-small: 6px;
+  /* Dialog title */
+  --okcancel-title-font-size: 20px;
+  --okcancel-title-color: #222;
+  --okcancel-title-font-weight: 600;
 
-// Spacing
-$spacing-xs: 0.25rem;
-$spacing-sm: 0.5rem;
-$spacing-md: 0.75rem;
-$spacing-lg: 1rem;
-$spacing-xl: 1.5rem;
+  /* Dialog description */
+  --okcancel-description-font-size: 16px;
+  --okcancel-description-color: #8e8e8e;
+  --okcancel-description-font-weight: 400;
 
-// Typography
-$font-size-sm: 0.875rem;
-$font-size-base: 1rem;
-$font-size-lg: 1.25rem;
-$font-weight-normal: 400;
-$font-weight-medium: 500;
-$font-weight-semibold: 600;
+  /* Dialog btn-box */
+  --okcancel-btn-box-padding: 10px 0;
+  --okcancel-btn-box-gap: 12px;
+  --okcancel-btn-box-flex-direction: row;
+  --okcancel-btn-box-justify-content: flex-end;
+  --okcancel-btn-box-align-items: center;
+  --okcancel-btn-box-height: unset;
 
-// Shadows
-$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 5%);
-$shadow-md:
-  0 4px 6px -1px rgb(0 0 0 / 10%),
-  0 2px 4px -2px rgb(0 0 0 / 10%);
-$shadow-lg:
-  0 10px 15px -3px rgb(0 0 0 / 10%),
-  0 4px 6px -4px rgb(0 0 0 / 10%);
-$shadow-xl:
-  0 20px 25px -5px rgb(0 0 0 / 10%),
-  0 8px 10px -6px rgb(0 0 0 / 10%);
+  /* Buttons */
+  --okcancel-button-padding: 8px 16px;
+  --okcancel-button-border-radius: 6px;
+  --okcancel-button-width: 100px;
+  --okcancel-button-height: 40px;
+  --okcancel-button-max-width: unset;
+  --okcancel-button-min-width: none;
+  --okcancel-button-border: none;
+  --okcancel-button-box-shadow: none;
+  --okcancel-button-font-size: 16px;
+  --okcancel-button-font-weight: 500;
+  --okcancel-button-flex: initial;
+  --okcancel-button-primary-bg: #2c89e5;
+  --okcancel-button-primary-color: #fff;
+  --okcancel-button-primary-border: none;
+  --okcancel-button-secondary-bg: unset;
+  --okcancel-button-secondary-color: #222;
+  --okcancel-button-secondary-border: 1px solid #d4d4d4;
 
-// Z-index
-$z-index-overlay: 1000;
+  /* Overlay */
+  --okcancel-overlay-bg: rgb(0 0 0 / 50%);
+  --okcancel-z-index: 1000;
+}
 
-// Transitions
-$transition-base: all 0.2s ease;
-$transition-fast: all 0.15s ease;
-$transition-slow: all 0.3s ease;
+@media (width < 640px) {
+  :root {
+    --okcancel-dialog-width: 85%;
+    --okcancel-btn-box-gap: 20px;
+    --okcancel-button-flex: 1;
+  }
+}

@@ -5,43 +5,14 @@ import type {
   DialogState,
   ConfirmOptions,
   AlertOptions,
-  Theme,
 } from './types';
 import { OkCancelContext } from './context';
 import Dialog from './components/dialog';
 // Toast feature removed
 
-// Default theme configuration
-const defaultTheme: Theme = {
-  classNames: {
-    overlay: '',
-    dialog: '',
-    header: '',
-    title: '',
-    description: '',
-    footer: '',
-    button: '',
-    buttonPrimary: '',
-    buttonSecondary: '',
-  },
-  styles: {},
-};
-
-export default function OkCancelProvider({ children, theme = {} }: OkCancelProviderProps) {
+export default function OkCancelProvider({ children }: OkCancelProviderProps) {
   const [dialogState, setDialogState] = useState<DialogState>({ type: null });
   const previousActiveElementRef = useRef<Element | null>(null); // dialog를 열기 직전의 포커스 대상
-
-  // Merge user theme with defaults
-  const mergedTheme: Theme = {
-    classNames: {
-      ...defaultTheme.classNames,
-      ...theme.classNames,
-    },
-    styles: {
-      ...defaultTheme.styles,
-      ...theme.styles,
-    },
-  };
 
   const closeDialog = useCallback(() => {
     setDialogState({ type: null });
@@ -66,8 +37,6 @@ export default function OkCancelProvider({ children, theme = {} }: OkCancelProvi
         cancelText: options.cancelText || '취소',
         canCloseOnOverlay: options.canCloseOnOverlay ?? true,
         canCloseOnEsc: options.canCloseOnEsc ?? true,
-        classNames: options.classNames,
-        styles: options.styles,
         resolve: resolve as (value: boolean | void) => void,
       });
     });
@@ -85,8 +54,6 @@ export default function OkCancelProvider({ children, theme = {} }: OkCancelProvi
         confirmText: options.confirmText || '확인',
         canCloseOnOverlay: options.canCloseOnOverlay ?? false,
         canCloseOnEsc: options.canCloseOnEsc ?? false,
-        classNames: options.classNames,
-        styles: options.styles,
         resolve: resolve as (value: boolean | void) => void,
       });
     });
@@ -129,9 +96,7 @@ export default function OkCancelProvider({ children, theme = {} }: OkCancelProvi
   return (
     <OkCancelContext.Provider value={contextValue}>
       {children}
-      {dialogState.type && (
-        <Dialog {...dialogState} theme={mergedTheme} onClose={handleDialogClose} />
-      )}
+      {dialogState.type && <Dialog {...dialogState} onClose={handleDialogClose} />}
     </OkCancelContext.Provider>
   );
 }

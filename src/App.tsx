@@ -22,8 +22,6 @@ function DemoComponent() {
     setResult('알림이 표시되었습니다.');
   };
 
-  // 토스트 기능 제거됨
-
   return (
     <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
       <h1>React OkCancel 라이브러리 데모</h1>
@@ -43,8 +41,6 @@ function DemoComponent() {
           성공 알림 다이얼로그 열기
         </button>
       </div>
-
-      {/* 토스트 데모 제거됨 */}
 
       {result && (
         <div
