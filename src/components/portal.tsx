@@ -6,5 +6,13 @@ interface PortalProps {
 }
 
 export default function Portal({ children }: PortalProps) {
-  return createPortal(children, document.getElementById('okcancel-portal-root') as HTMLElement);
+  let portalRoot = document.getElementById('okcancel-portal-root');
+
+  if (!portalRoot) {
+    portalRoot = document.createElement('div');
+    portalRoot.id = 'okcancel-portal-root';
+    document.body.appendChild(portalRoot);
+  }
+
+  return createPortal(children, portalRoot);
 }
