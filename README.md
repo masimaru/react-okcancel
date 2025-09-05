@@ -148,23 +148,23 @@ CSS 변수를 재정의하여 모양을 커스터마이징할 수 있습니다:
   --okcancel-dialog-border-radius: 8px;
   --okcancel-dialog-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%), 0 8px 10px -6px rgb(0 0 0 / 10%);
   --okcancel-dialog-max-width: none;
-  --okcancel-dialog-min-width: none;
+  --okcancel-dialog-min-width: auto;
   --okcancel-dialog-max-height: none;
-  --okcancel-dialog-min-height: none;
+  --okcancel-dialog-min-height: auto;
   --okcancel-dialog-width: 500px;
   --okcancel-dialog-height: max-content;
   --okcancel-dialog-padding: 16px 24px;
   --okcancel-dialog-border: none;
 
   /* 다이얼로그 콘텐츠 */
-  --okcancel-content-padding: none;
+  --okcancel-content-padding: 0;
   --okcancel-content-gap: 8px;
   --okcancel-content-flex-direction: column;
   --okcancel-content-justify-content: center;
-  --okcancel-content-align-items: unset;
-  --okcancel-content-height: 100px;
+  --okcancel-content-align-items: normal;
+  --okcancel-content-height: auto;
   --okcancel-content-max-height: none;
-  --okcancel-content-min-height: none;
+  --okcancel-content-min-height: 100px;
 
   /* 제목 */
   --okcancel-title-font-size: 20px;
@@ -182,20 +182,20 @@ CSS 변수를 재정의하여 모양을 커스터마이징할 수 있습니다:
   --okcancel-btn-box-flex-direction: row;
   --okcancel-btn-box-justify-content: flex-end;
   --okcancel-btn-box-align-items: center;
-  --okcancel-btn-box-height: unset;
+  --okcancel-btn-box-height: auto;
 
   /* 버튼 */
   --okcancel-button-padding: 8px 16px;
   --okcancel-button-border-radius: 6px;
   --okcancel-button-width: 100px;
   --okcancel-button-height: 40px;
-  --okcancel-button-max-width: unset;
-  --okcancel-button-min-width: none;
+  --okcancel-button-max-width: none;
+  --okcancel-button-min-width: auto;
   --okcancel-button-border: none;
   --okcancel-button-box-shadow: none;
   --okcancel-button-font-size: 16px;
   --okcancel-button-font-weight: 500;
-  --okcancel-button-flex: initial;
+  --okcancel-button-flex: 0 1 auto;
 
   /* 주 버튼 (확인) */
   --okcancel-button-primary-bg: #2c89e5;
@@ -203,7 +203,7 @@ CSS 변수를 재정의하여 모양을 커스터마이징할 수 있습니다:
   --okcancel-button-primary-border: none;
 
   /* 보조 버튼 (취소) */
-  --okcancel-button-secondary-bg: unset;
+  --okcancel-button-secondary-bg: transparent;
   --okcancel-button-secondary-color: #222;
   --okcancel-button-secondary-border: 1px solid #d4d4d4;
 

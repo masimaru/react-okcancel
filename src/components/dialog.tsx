@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react';
 import type { DialogState } from '@/types';
 import Portal from './portal';
 import styles from './dialog.module.scss';
@@ -16,15 +15,6 @@ export default function Dialog({
   canCloseOnOverlay,
   onClose,
 }: DialogProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const confirmButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (confirmButtonRef.current) {
-      confirmButtonRef.current.focus();
-    }
-  }, []);
-
   const handleOverlayClick = (event: React.MouseEvent) => {
     if (event.target === event.currentTarget && canCloseOnOverlay) {
       onClose(false);
@@ -43,7 +33,6 @@ export default function Dialog({
     <Portal>
       <div className={styles.overlay} onClick={handleOverlayClick} data-testid="okcancel-overlay">
         <dialog
-          ref={dialogRef}
           className={styles.dialog}
           aria-labelledby={title ? 'okcancel-title' : undefined}
           aria-describedby={description ? 'okcancel-description' : undefined}
@@ -76,11 +65,11 @@ export default function Dialog({
               </button>
             )}
             <button
-              ref={confirmButtonRef}
               type="button"
               className={styles['button-primary']}
               onClick={handleConfirm}
               data-testid="okcancel-confirm-button"
+              autoFocus
             >
               {confirmText}
             </button>
