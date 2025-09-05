@@ -34,8 +34,8 @@ export default function OkCancelProvider({ children }: OkCancelProviderProps) {
         title: options.title,
         description: options.description,
         confirmText: options.confirmText || '확인',
-        canCloseOnOverlay: options.canCloseOnOverlay ?? false,
-        canCloseOnEsc: options.canCloseOnEsc ?? false,
+        canCloseOnOverlay: options.canCloseOnOverlay ?? true,
+        canCloseOnEsc: options.canCloseOnEsc ?? true,
         resolve: resolve as (value: boolean | void) => void,
       });
     });
