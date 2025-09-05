@@ -3,9 +3,11 @@
 [![npm version](https://badge.fury.io/js/react-okcancel.svg)](https://www.npmjs.com/package/react-okcancel)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-확인/알림 다이얼로그를 위한 현대적이고 접근성이 뛰어난 React 라이브러리입니다. TypeScript로 구축되었으며, Promise 기반 API, 완전한 접근성 지원, 그리고 광범위한 커스터마이징 옵션을 제공합니다.
+**React + TypeScript 기반의 경량 모달(dialog) 라이브러리**입니다.
+`confirm`, `alert`를 Promise 기반으로 간단히 호출할 수 있으며,
+CSS 변수로 스타일을 커스터마이징할 수 있습니다.
 
-## 주요 특징
+## ✨ 주요 특징
 
 - **Promise 기반 함수 호출** - 직관적인 사용법과 결과 처리
 - **간편한 커스터마이징** - CSS 변수를 통한 테마 제어
@@ -137,7 +139,7 @@ await alert({
 console.log('사용자가 알림을 확인했습니다');
 ```
 
-## 커스터마이징
+## 🎨 커스터마이징
 
 CSS 변수를 재정의하여 모양을 커스터마이징할 수 있습니다:
 
