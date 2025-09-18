@@ -4,10 +4,9 @@
 name: Node.js Package
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 concurrency:
   group: release-main
@@ -15,6 +14,7 @@ concurrency:
 
 jobs:
   release:
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
 
     permissions: # semantic-release가 릴리스/태그/커밋 푸시 가능하도록
