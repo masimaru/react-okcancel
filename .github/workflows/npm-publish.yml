@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # 전체 히스토리/태그 필요(버전 계산)
+          persist-credentials: false # 기본 GITHUB_TOKEN 제거
 
       - name: Setup
         uses: actions/setup-node@v4
@@ -47,5 +48,6 @@ jobs:
       - name: Release (semantic-release)
         run: npx semantic-release
         env:
+          GH_TOKEN: ${{ secrets.GH_PAT }} # semantic-release가 우선적으로 참조
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }} # 일부 플러그인들이 GITHUB_TOKEN만 봄
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
