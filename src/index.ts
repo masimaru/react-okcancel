@@ -5,5 +5,3 @@ export * from './types';
 
 // Import base styles
 import './styles/index.scss';
-
-//test
