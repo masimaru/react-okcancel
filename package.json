@@ -15,7 +15,10 @@
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/masimaru/react-okcancel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/masimaru/react-okcancel"
+  },
   "license": "MIT",
   "scripts": {
     "dev": "vite",
@@ -31,6 +34,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
@@ -42,6 +50,7 @@
     "globals": "^16.3.0",
     "prettier": "^3.6.2",
     "sass": "^1.91.0",
+    "semantic-release": "^24.2.8",
     "stylelint": "^16.23.1",
     "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-standard-scss": "^15.0.1",
