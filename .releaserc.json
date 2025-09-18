@@ -1,16 +1,8 @@
 {
-  "branches": ["main"],
+  "branches": ["main", { "name": "chore/0918", "prerelease": "alpha" }],
   "plugins": [
     ["@semantic-release/commit-analyzer", { "preset": "conventionalcommits" }],
     ["@semantic-release/release-notes-generator", { "preset": "conventionalcommits" }],
-    ["@semantic-release/changelog", { "changelogFile": "CHANGELOG.md" }],
-    ["@semantic-release/npm", { "npmPublish": true }],
-    [
-      "@semantic-release/git",
-      {
-        "assets": ["package.json", "CHANGELOG.md"],
-        "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
-      }
-    ]
+    ["@semantic-release/npm", { "npmPublish": true }]
   ]
 }
