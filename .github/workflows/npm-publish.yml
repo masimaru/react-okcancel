@@ -4,9 +4,9 @@
 name: Node.js Package
 
 on:
-  pull_request:
-    types: [closed]
-    branches: [main]
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   release:
-    if: ${{ github.event.pull_request.merged == true }}
+    if: "!contains(github.event.head_commit.message, 'chore(release)')"
     runs-on: ubuntu-latest
 
     permissions: # semantic-release가 릴리스/태그/커밋 푸시 가능하도록
@@ -27,7 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0 # 전체 히스토리/태그 필요(버전 계산)
           persist-credentials: false # 기본 GITHUB_TOKEN 제거
 
