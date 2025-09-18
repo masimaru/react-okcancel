@@ -5,10 +5,10 @@ name: Node.js Package
 
 on:
   push:
-    branches: 
-    - main
+    branches:
+      - main
   workflow_dispatch:
-  
+
 concurrency:
   group: release-main
   cancel-in-progress: false
@@ -16,18 +16,25 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
+    permissions: # semantic-release가 릴리스/태그/커밋 푸시 가능하도록
+      contents: write
+      issues: write
+      pull-requests: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0 # 전체 히스토리/태그 필요(버전 계산)
+
       - name: Setup
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci
 
@@ -36,8 +43,8 @@ jobs:
 
       - name: Test
         run: npm test --if-present
-        
-      - name: Publish to npm
-        run: npm publish
+
+      - name: Release (semantic-release)
+        run: npx semantic-release
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
