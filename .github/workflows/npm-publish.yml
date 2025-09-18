@@ -27,6 +27,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0 # 전체 히스토리/태그 필요(버전 계산)
           persist-credentials: false # 기본 GITHUB_TOKEN 제거
 
