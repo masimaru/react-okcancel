@@ -22,6 +22,8 @@ export default function OkCancelProvider({ children }: OkCancelProviderProps) {
         cancelText: options.cancelText || '취소',
         canCloseOnOverlay: options.canCloseOnOverlay ?? true,
         canCloseOnEsc: options.canCloseOnEsc ?? true,
+        showCloseButton: options.showCloseButton ?? false,
+        enableAnimation: options.enableAnimation ?? true,
         resolve: resolve as (value: boolean | void) => void,
       });
     });
@@ -36,6 +38,8 @@ export default function OkCancelProvider({ children }: OkCancelProviderProps) {
         confirmText: options.confirmText || '확인',
         canCloseOnOverlay: options.canCloseOnOverlay ?? true,
         canCloseOnEsc: options.canCloseOnEsc ?? true,
+        showCloseButton: options.showCloseButton ?? false,
+        enableAnimation: options.enableAnimation ?? true,
         resolve: resolve as (value: boolean | void) => void,
       });
     });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { DialogState } from '@/types';
 import Portal from './portal';
 import styles from './dialog.module.scss';
@@ -17,15 +17,25 @@ export default function Dialog({
   cancelText,
   canCloseOnOverlay,
   canCloseOnEsc,
+  showCloseButton,
+  enableAnimation,
   onClose,
 }: DialogProps) {
   const [phase, setPhase] = useState<Phase>('enter');
   const [pendingResult, setPendingResult] = useState<boolean | null>(null); // return 값
 
-  const startExit = (result: boolean) => {
-    setPendingResult(result);
-    setPhase('exit');
-  };
+  const startExit = useCallback(
+    (result: boolean) => {
+      if (!enableAnimation) {
+        onClose(result);
+        return;
+      }
+
+      setPendingResult(result);
+      setPhase('exit');
+    },
+    [enableAnimation, onClose],
+  );
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget && canCloseOnOverlay) {
@@ -34,6 +44,7 @@ export default function Dialog({
   };
 
   const handleAnimationEnd = (e: React.AnimationEvent) => {
+    if (!enableAnimation) return;
     if (e.target !== e.currentTarget) return; // 버블링 방지
     if (phase === 'exit' && pendingResult !== null) {
       onClose(pendingResult);
@@ -50,7 +61,7 @@ export default function Dialog({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [canCloseOnEsc]);
+  }, [canCloseOnEsc, startExit]);
 
   return (
     <Portal>
@@ -58,11 +69,36 @@ export default function Dialog({
         <dialog
           className={styles.dialog}
           data-phase={phase}
+          data-animation={enableAnimation ?? true}
           aria-labelledby={title ? 'okcancel-title' : undefined}
           aria-describedby={description ? 'okcancel-description' : undefined}
           onAnimationEnd={handleAnimationEnd}
           open
         >
+          {showCloseButton && (
+            <button
+              type="button"
+              className={styles['close-button']}
+              onClick={() => startExit(false)}
+              aria-label="닫기"
+            >
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9 3L3 9M3 3L9 9"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          )}
           <div className={styles.content}>
             {title && (
               <div id="okcancel-title" className={styles.title}>

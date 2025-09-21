@@ -69,14 +69,16 @@ function App() {
 
 #### 옵션
 
-| 옵션                | 타입        | 기본값   | 설명                        |
-| ------------------- | ----------- | -------- | --------------------------- |
-| `title`             | `ReactNode` | -        | 다이얼로그 제목             |
-| `description`       | `ReactNode` | -        | 다이얼로그 내용/메시지      |
-| `confirmText`       | `ReactNode` | `'확인'` | 확인 버튼 텍스트            |
-| `cancelText`        | `ReactNode` | `'취소'` | 취소 버튼 텍스트            |
-| `canCloseOnOverlay` | `boolean`   | `true`   | 오버레이 클릭으로 닫기 허용 |
-| `canCloseOnEsc`     | `boolean`   | `true`   | Escape 키로 닫기 허용       |
+| 옵션                | 타입        | 기본값    | 설명                        |
+| ------------------- | ----------- | --------- | --------------------------- |
+| `title`             | `ReactNode` | -         | 다이얼로그 제목             |
+| `description`       | `ReactNode` | -         | 다이얼로그 내용/메시지      |
+| `confirmText`       | `ReactNode` | `'확인'`  | 확인 버튼 텍스트            |
+| `cancelText`        | `ReactNode` | `'취소'`  | 취소 버튼 텍스트            |
+| `canCloseOnOverlay` | `boolean`   | `true`    | 오버레이 클릭으로 닫기 허용 |
+| `canCloseOnEsc`     | `boolean`   | `true`    | Escape 키로 닫기 허용       |
+| `showCloseButton`   | `boolean`   | `false`   | 오른쪽 상단 X 버튼 표시     |
+| `enableAnimation`   | `boolean`   | `true`    | 다이얼로그 슬라이드 애니메이션 활성화 |
 
 #### 반환값
 
@@ -99,6 +101,8 @@ const result = await confirm({
   confirmText: '저장',
   cancelText: '취소',
   canCloseOnOverlay: false, // 실수로 닫히는 것 방지
+  showCloseButton: true, // X 버튼 표시
+  enableAnimation: false, // 애니메이션 비활성화
 });
 
 if (result) {
@@ -114,13 +118,15 @@ if (result) {
 
 #### 옵션
 
-| 옵션                | 타입        | 기본값   | 설명                        |
-| ------------------- | ----------- | -------- | --------------------------- |
-| `title`             | `ReactNode` | -        | 다이얼로그 제목             |
-| `description`       | `ReactNode` | -        | 다이얼로그 내용/메시지      |
-| `confirmText`       | `ReactNode` | `'확인'` | 확인 버튼 텍스트            |
-| `canCloseOnOverlay` | `boolean`   | `true`   | 오버레이 클릭으로 닫기 허용 |
-| `canCloseOnEsc`     | `boolean`   | `true`   | Escape 키로 닫기 허용       |
+| 옵션                | 타입        | 기본값    | 설명                        |
+| ------------------- | ----------- | --------- | --------------------------- |
+| `title`             | `ReactNode` | -         | 다이얼로그 제목             |
+| `description`       | `ReactNode` | -         | 다이얼로그 내용/메시지      |
+| `confirmText`       | `ReactNode` | `'확인'`  | 확인 버튼 텍스트            |
+| `canCloseOnOverlay` | `boolean`   | `true`    | 오버레이 클릭으로 닫기 허용 |
+| `canCloseOnEsc`     | `boolean`   | `true`    | Escape 키로 닫기 허용       |
+| `showCloseButton`   | `boolean`   | `false`   | 오른쪽 상단 X 버튼 표시     |
+| `enableAnimation`   | `boolean`   | `true`    | 다이얼로그 슬라이드 애니메이션 활성화 |
 
 #### 반환값
 
@@ -196,6 +202,7 @@ CSS 변수를 재정의하여 모양을 커스터마이징할 수 있습니다:
   --okcancel-button-box-shadow: none;
   --okcancel-button-font-size: 16px;
   --okcancel-button-font-weight: 500;
+  --okcancel-button-text-align: center;
   --okcancel-button-flex: 0 1 auto;
 
   /* 주 버튼 (확인) */

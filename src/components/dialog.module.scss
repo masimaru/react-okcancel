@@ -39,12 +39,17 @@ $anim-ease-out: cubic-bezier(0.68, -0.55, 0.265, 1.55); // 나가는 스프링 �
   border: var(--okcancel-dialog-border);
   padding: var(--okcancel-dialog-padding);
 
-  &[data-phase='enter'] {
+  &[data-animation='true'][data-phase='enter'] {
     animation: okcancel-slide-in $anim-duration $anim-ease-in forwards;
   }
 
-  &[data-phase='exit'] {
+  &[data-animation='true'][data-phase='exit'] {
     animation: okcancel-slide-out $anim-duration $anim-ease-out forwards;
+  }
+
+  &[data-animation='false'] {
+    // 애니메이션 없이 즉시 표시
+    transform: translateY(0);
   }
 
   .content {
@@ -69,6 +74,22 @@ $anim-ease-out: cubic-bezier(0.68, -0.55, 0.265, 1.55); // 나가는 스프링 �
       font-weight: var(--okcancel-description-font-weight);
       color: var(--okcancel-description-color);
     }
+  }
+
+  .close-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
   }
 
   .btn-box {

@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 export interface BaseDialogOptions {
   title?: ReactNode;
   description?: ReactNode;
+  showCloseButton?: boolean;
+  enableAnimation?: boolean;
 }
 
 export interface ConfirmOptions extends BaseDialogOptions {
@@ -26,6 +28,8 @@ export interface DialogState {
   cancelText?: ReactNode;
   canCloseOnOverlay?: boolean;
   canCloseOnEsc?: boolean;
+  showCloseButton?: boolean;
+  enableAnimation?: boolean;
   resolve?: (value: boolean | void) => void;
 }
 
