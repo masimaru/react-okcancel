@@ -70,9 +70,9 @@ function InteractivePlayground() {
   const [lastResult, setLastResult] = useState('');
   const [options, setOptions] = useState({
     type: 'confirm' as 'confirm' | 'alert',
-    title: '',
-    description: '',
-    confirmText: '',
+    title: '확인',
+    description: '정말로 삭제하시겠습니까?',
+    confirmText: '삭제',
     cancelText: '',
     canCloseOnOverlay: true,
     canCloseOnEsc: true,

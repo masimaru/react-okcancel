@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import type {
   OkCancelContextValue,
   OkCancelProviderProps,
@@ -58,21 +58,6 @@ export default function OkCancelProvider({ children }: OkCancelProviderProps) {
       return { type: null };
     });
   }, []);
-
-  // Handle keyboard events for ESC key
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && dialogState.type && dialogState.canCloseOnEsc) {
-        event.preventDefault();
-        handleDialogClose(false);
-      }
-    };
-
-    if (dialogState.type) {
-      document.addEventListener('keydown', handleKeyDown);
-      return () => document.removeEventListener('keydown', handleKeyDown);
-    }
-  }, [dialogState, handleDialogClose]);
 
   return (
     <OkCancelContext.Provider value={contextValue}>

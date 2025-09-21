@@ -1,3 +1,13 @@
+// 변수 정의
+$anim-duration: 400ms;
+$anim-ease-in: cubic-bezier(0.175, 0.885, 0.32, 1.275); // 들어오는 스프링 효과
+$anim-ease-out: cubic-bezier(0.68, -0.55, 0.265, 1.55); // 나가는 스프링 효과
+
+// 접근성 대응 (모션 줄이기)
+@media (prefers-reduced-motion: reduce) {
+  $anim-duration: 1ms;
+}
+
 .overlay {
   position: fixed;
   inset: 0;
@@ -7,8 +17,12 @@
   z-index: var(--okcancel-z-index);
   background-color: var(--okcancel-overlay-bg);
 
-  * {
-    box-sizing: border-box;
+  &[data-phase='enter'] {
+    animation: okcancel-fade-in $anim-duration $anim-ease-in forwards;
+  }
+
+  &[data-phase='exit'] {
+    animation: okcancel-fade-out $anim-duration $anim-ease-out forwards;
   }
 }
 
@@ -24,6 +38,14 @@
   height: var(--okcancel-dialog-height);
   border: var(--okcancel-dialog-border);
   padding: var(--okcancel-dialog-padding);
+
+  &[data-phase='enter'] {
+    animation: okcancel-slide-in $anim-duration $anim-ease-in forwards;
+  }
+
+  &[data-phase='exit'] {
+    animation: okcancel-slide-out $anim-duration $anim-ease-out forwards;
+  }
 
   .content {
     display: flex;
@@ -65,24 +87,62 @@
       padding: var(--okcancel-button-padding);
       font-size: var(--okcancel-button-font-size);
       font-weight: var(--okcancel-button-font-weight);
+      text-align: var(--okcancel-button-text-align);
       cursor: pointer;
       min-width: var(--okcancel-button-min-width);
       max-width: var(--okcancel-button-max-width);
       width: var(--okcancel-button-width);
       height: var(--okcancel-button-height);
       flex: var(--okcancel-button-flex);
-    }
 
-    .button-primary {
-      background-color: var(--okcancel-button-primary-bg);
-      color: var(--okcancel-button-primary-color);
-      border: var(--okcancel-button-primary-border);
-    }
+      &.button-primary {
+        background-color: var(--okcancel-button-primary-bg);
+        color: var(--okcancel-button-primary-color);
+        border: var(--okcancel-button-primary-border);
+      }
 
-    .button-secondary {
-      background-color: var(--okcancel-button-secondary-bg);
-      color: var(--okcancel-button-secondary-color);
-      border: var(--okcancel-button-secondary-border);
+      &.button-secondary {
+        background-color: var(--okcancel-button-secondary-bg);
+        color: var(--okcancel-button-secondary-color);
+        border: var(--okcancel-button-secondary-border);
+      }
     }
+  }
+}
+
+@keyframes okcancel-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes okcancel-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+@keyframes okcancel-slide-in {
+  from {
+    transform: translateY(50vh);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes okcancel-slide-out {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(50vh);
   }
 }
