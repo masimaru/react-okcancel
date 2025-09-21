@@ -70,12 +70,14 @@ function InteractivePlayground() {
   const [lastResult, setLastResult] = useState('');
   const [options, setOptions] = useState({
     type: 'confirm' as 'confirm' | 'alert',
-    title: '',
-    description: '',
-    confirmText: '',
+    title: '확인',
+    description: '정말로 삭제하시겠습니까?',
+    confirmText: '삭제',
     cancelText: '',
     canCloseOnOverlay: true,
     canCloseOnEsc: true,
+    showCloseButton: false,
+    enableAnimation: true,
   });
 
   const generateCodeExample = () => {
@@ -88,6 +90,8 @@ function InteractivePlayground() {
       optionsObj.cancelText = options.cancelText;
     if (!options.canCloseOnOverlay) optionsObj.canCloseOnOverlay = false;
     if (!options.canCloseOnEsc) optionsObj.canCloseOnEsc = false;
+    if (options.showCloseButton) optionsObj.showCloseButton = true;
+    if (!options.enableAnimation) optionsObj.enableAnimation = false;
 
     const hasOptions = Object.keys(optionsObj).length > 0;
     const optionsStr = hasOptions
@@ -114,6 +118,8 @@ function InteractivePlayground() {
         cancelText: options.cancelText || undefined,
         canCloseOnOverlay: options.canCloseOnOverlay,
         canCloseOnEsc: options.canCloseOnEsc,
+        showCloseButton: options.showCloseButton,
+        enableAnimation: options.enableAnimation,
       });
       setLastResult(`Confirm 결과: ${result ? 'true' : 'false'}`);
     } else if (options.type === 'alert') {
@@ -123,6 +129,8 @@ function InteractivePlayground() {
         confirmText: options.confirmText || undefined,
         canCloseOnOverlay: options.canCloseOnOverlay,
         canCloseOnEsc: options.canCloseOnEsc,
+        showCloseButton: options.showCloseButton,
+        enableAnimation: options.enableAnimation,
       });
       setLastResult('Alert 완료');
     }
@@ -235,6 +243,30 @@ function InteractivePlayground() {
                   className={styles.checkbox}
                 />
                 Can Close On ESC
+              </label>
+            </div>
+
+            <div className={styles['control-group']}>
+              <label className={styles['checkbox-label']}>
+                <input
+                  type="checkbox"
+                  checked={options.showCloseButton}
+                  onChange={(e) => setOptions({ ...options, showCloseButton: e.target.checked })}
+                  className={styles.checkbox}
+                />
+                Show Close Button
+              </label>
+            </div>
+
+            <div className={styles['control-group']}>
+              <label className={styles['checkbox-label']}>
+                <input
+                  type="checkbox"
+                  checked={options.enableAnimation}
+                  onChange={(e) => setOptions({ ...options, enableAnimation: e.target.checked })}
+                  className={styles.checkbox}
+                />
+                Enable Animation
               </label>
             </div>
           </div>
