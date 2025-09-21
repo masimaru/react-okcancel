@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-okcancel.svg)](https://www.npmjs.com/package/react-okcancel)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=flat&logo=stackblitz)](https://stackblitz.com/edit/vitejs-vite-wszi61bn?file=src%2FApp.tsx)
 
 **React + TypeScript 기반의 경량 모달(dialog) 라이브러리**입니다.
 `confirm`, `alert`를 Promise 기반으로 간단히 호출할 수 있으며,
@@ -19,24 +20,14 @@ CSS 변수로 스타일을 커스터마이징할 수 있습니다.
 npm install react-okcancel
 ```
 
+## 🎮 Live Demo
+
+[**StackBlitz에서 바로 체험하기**](https://stackblitz.com/edit/vitejs-vite-wszi61bn?file=src%2FApp.tsx)
+
 ## 🚀 빠른 시작
 
-### 1. Provider 설정
-
-앱을 `OkCancelProvider`로 감싸주세요:
-
 ```tsx
-import { OkCancelProvider } from 'react-okcancel';
-
-function App() {
-  return <OkCancelProvider>{/* 앱 컴포넌트들 */}</OkCancelProvider>;
-}
-```
-
-### 2. 컴포넌트에서 사용
-
-```tsx
-import { useOkCancel } from 'react-okcancel';
+import { OkCancelProvider, useOkCancel } from 'react-okcancel';
 
 function MyComponent() {
   const { confirm, alert } = useOkCancel();
@@ -59,6 +50,14 @@ function MyComponent() {
   };
 
   return <button onClick={handleDelete}>항목 삭제</button>;
+}
+
+function App() {
+  return (
+    <OkCancelProvider>
+      <MyComponent />
+    </OkCancelProvider>
+  );
 }
 ```
 
