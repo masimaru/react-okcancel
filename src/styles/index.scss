@@ -1,7 +1,0 @@
-@use './variables';
-
-// Ensure proper stacking context for portal elements
-#okcancel-portal-root {
-  position: relative;
-  z-index: var(--okcancel-z-index);
-}

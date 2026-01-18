@@ -1,292 +1,89 @@
 import { useState } from 'react';
-import { OkCancelProvider, useOkCancel } from './index';
-import styles from './App.module.scss';
-import './code-highlight.css';
+import { useOkCancel, OkCancelProvider } from './index';
+import { shadcnPreset } from './registry'; // 데모용 - npm 패키지에는 미포함
 
-interface CodeBlockProps {
-  title: string;
-  code: string;
-}
-
-function CodeBlock({ title, code }: CodeBlockProps) {
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy code:', err);
-    }
-  };
-
-  const highlightCode = (code: string) => {
-    // HTML escape first
-    let highlighted = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-    // Apply syntax highlighting
-    highlighted = highlighted
-      // Comments first (to avoid conflicts)
-      .replace(/\/\/.*$/gm, '<span class="comment">$&</span>')
-      // Strings
-      .replace(/(["'`])((?:\\.|(?!\1)[^\\])*?)\1/g, '<span class="string">$1$2$1</span>')
-      // Keywords
-      .replace(
-        /\b(import|export|from|const|let|var|function|return|if|else|await|async|true|false|null|undefined)\b/g,
-        '<span class="keyword">$1</span>',
-      )
-      // Functions (react-okcancel specific)
-      .replace(
-        /\b(confirm|alert|useOkCancel|OkCancelProvider)\b/g,
-        '<span class="function">$1</span>',
-      )
-      // Properties (word followed by colon, but not inside strings)
-      .replace(/\b(\w+)(?=\s*:(?![^"]*"[^"]*$))/g, '<span class="property">$1</span>')
-      // Punctuation
-      .replace(/([{}()[\],;:])/g, '<span class="punctuation">$1</span>');
-
-    return highlighted;
-  };
-
-  return (
-    <div className={styles['code-block-container']}>
-      <div className={styles['code-block-header']}>
-        <h3 className={styles['code-block-title']}>{title}</h3>
-        <button onClick={handleCopy} className={styles['copy-button']}>
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
-      </div>
-      <pre
-        className={styles['code-block']}
-        dangerouslySetInnerHTML={{ __html: highlightCode(code) }}
-      />
-    </div>
-  );
-}
-
-function InteractivePlayground() {
+const DemoContent = () => {
   const { confirm, alert } = useOkCancel();
-  const [lastResult, setLastResult] = useState('');
-  const [options, setOptions] = useState({
-    type: 'confirm' as 'confirm' | 'alert',
-    title: '확인',
-    description: '정말로 삭제하시겠습니까?',
-    confirmText: '삭제',
-    cancelText: '',
-    canCloseOnOverlay: true,
-    canCloseOnEsc: true,
-    showCloseButton: false,
-    enableAnimation: true,
-  });
+  const [log, setLog] = useState<string[]>([]);
 
-  const generateCodeExample = () => {
-    const optionsObj: Record<string, string | boolean> = {};
+  const addLog = (msg: string) => setLog((prev) => [msg, ...prev]);
 
-    if (options.title) optionsObj.title = options.title;
-    if (options.description) optionsObj.description = options.description;
-    if (options.confirmText) optionsObj.confirmText = options.confirmText;
-    if (options.type === 'confirm' && options.cancelText)
-      optionsObj.cancelText = options.cancelText;
-    if (!options.canCloseOnOverlay) optionsObj.canCloseOnOverlay = false;
-    if (!options.canCloseOnEsc) optionsObj.canCloseOnEsc = false;
-    if (options.showCloseButton) optionsObj.showCloseButton = true;
-    if (!options.enableAnimation) optionsObj.enableAnimation = false;
-
-    const hasOptions = Object.keys(optionsObj).length > 0;
-    const optionsStr = hasOptions
-      ? '{\n  ' +
-        Object.entries(optionsObj)
-          .map(([key, value]) => `${key}: ${typeof value === 'string' ? `'${value}'` : value}`)
-          .join(',\n  ') +
-        '\n}'
-      : '';
-
-    if (options.type === 'confirm') {
-      return `const result = await confirm(${optionsStr || ''});`;
-    } else {
-      return `await alert(${optionsStr || ''});`;
-    }
+  // 1. 기본 사용법 (Confirm)
+  const handleConfirm = async () => {
+    addLog('⏳ Confirm 요청...');
+    const result = await confirm({
+      title: '삭제하시겠습니까?',
+      description: '이 작업은 되돌릴 수 없습니다.',
+      confirmText: '삭제',
+      cancelText: '취소',
+    });
+    addLog(`✅ Confirm 결과: ${result}`);
   };
 
-  const handleTest = async () => {
-    if (options.type === 'confirm') {
-      const result = await confirm({
-        title: options.title || undefined,
-        description: options.description || undefined,
-        confirmText: options.confirmText || undefined,
-        cancelText: options.cancelText || undefined,
-        canCloseOnOverlay: options.canCloseOnOverlay,
-        canCloseOnEsc: options.canCloseOnEsc,
-        showCloseButton: options.showCloseButton,
-        enableAnimation: options.enableAnimation,
-      });
-      setLastResult(`Confirm 결과: ${result ? 'true' : 'false'}`);
-    } else if (options.type === 'alert') {
-      await alert({
-        title: options.title || undefined,
-        description: options.description || undefined,
-        confirmText: options.confirmText || undefined,
-        canCloseOnOverlay: options.canCloseOnOverlay,
-        canCloseOnEsc: options.canCloseOnEsc,
-        showCloseButton: options.showCloseButton,
-        enableAnimation: options.enableAnimation,
-      });
-      setLastResult('Alert 완료');
-    }
+  // 2. 비동기 처리
+  const handleAsyncAlert = async () => {
+    addLog('⏳ Alert 열림');
+    await alert({
+      title: '처리 완료',
+      description: '모든 데이터가 성공적으로 저장되었습니다.',
+    });
+    addLog('✅ Alert 닫힘');
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles['main-container']}>
-        <div className={styles['left-panel']}>
-          <div className={styles['code-examples']}>
-            <h2 className={styles['code-examples-title']}>Code Example</h2>
-            <CodeBlock
-              title={`${options.type === 'confirm' ? 'Confirm' : 'Alert'} Usage`}
-              code={generateCodeExample()}
-            />
-          </div>
-        </div>
-        <div className={styles['right-panel']}>
-          <h2 className={styles['code-examples-title']}>Playground</h2>
-          <div className={styles.controls}>
-            <div className={styles['control-group']}>
-              <label className={styles.label}>타입:</label>
-              <div className={styles['radio-group']}>
-                <label className={styles['radio-label']}>
-                  <input
-                    type="radio"
-                    name="type"
-                    value="confirm"
-                    checked={options.type === 'confirm'}
-                    onChange={(e) => setOptions({ ...options, type: e.target.value as 'confirm' })}
-                  />
-                  Confirm
-                </label>
-                <label className={styles['radio-label']}>
-                  <input
-                    type="radio"
-                    name="type"
-                    value="alert"
-                    checked={options.type === 'alert'}
-                    onChange={(e) => setOptions({ ...options, type: e.target.value as 'alert' })}
-                  />
-                  Alert
-                </label>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gray-50 p-8 font-sans">
+      <div className="max-w-2xl mx-auto space-y-8">
+        <header className="text-center space-y-2">
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+            @pop-kit/okcancel
+          </h1>
+          <p className="text-gray-500">UI-Agnostic Async Overlay Manager for React</p>
+        </header>
 
-            <div className={styles['control-group']}>
-              <label className={styles.label}>Title (optional):</label>
-              <input
-                type="text"
-                value={options.title}
-                onChange={(e) => setOptions({ ...options, title: e.target.value })}
-                className={styles.input}
-                placeholder="다이얼로그 제목 (비워두면 undefined)"
-              />
-            </div>
+        <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-6">
+          <h2 className="text-xl font-semibold text-gray-800">🚀 기능 테스트</h2>
 
-            <div className={styles['control-group']}>
-              <label className={styles.label}>Description (optional):</label>
-              <textarea
-                value={options.description}
-                onChange={(e) => setOptions({ ...options, description: e.target.value })}
-                className={styles.textarea}
-                placeholder="다이얼로그 설명 (비워두면 undefined)"
-                rows={3}
-              />
-            </div>
-
-            <div className={styles['control-group']}>
-              <label className={styles.label}>Confirm Text (optional):</label>
-              <input
-                type="text"
-                value={options.confirmText}
-                onChange={(e) => setOptions({ ...options, confirmText: e.target.value })}
-                className={styles.input}
-                placeholder="확인 버튼 텍스트 (비워두면 기본값)"
-              />
-            </div>
-
-            <div className={styles['control-group']}>
-              <label className={styles.label}>Cancel Text (optional):</label>
-              <input
-                type="text"
-                value={options.cancelText}
-                onChange={(e) => setOptions({ ...options, cancelText: e.target.value })}
-                className={styles.input}
-                placeholder="취소 버튼 텍스트 (비워두면 기본값)"
-                disabled={options.type !== 'confirm'}
-              />
-            </div>
-
-            <div className={styles['control-group']}>
-              <label className={styles['checkbox-label']}>
-                <input
-                  type="checkbox"
-                  checked={options.canCloseOnOverlay}
-                  onChange={(e) => setOptions({ ...options, canCloseOnOverlay: e.target.checked })}
-                  className={styles.checkbox}
-                />
-                Can Close On Overlay
-              </label>
-            </div>
-
-            <div className={styles['control-group']}>
-              <label className={styles['checkbox-label']}>
-                <input
-                  type="checkbox"
-                  checked={options.canCloseOnEsc}
-                  onChange={(e) => setOptions({ ...options, canCloseOnEsc: e.target.checked })}
-                  className={styles.checkbox}
-                />
-                Can Close On ESC
-              </label>
-            </div>
-
-            <div className={styles['control-group']}>
-              <label className={styles['checkbox-label']}>
-                <input
-                  type="checkbox"
-                  checked={options.showCloseButton}
-                  onChange={(e) => setOptions({ ...options, showCloseButton: e.target.checked })}
-                  className={styles.checkbox}
-                />
-                Show Close Button
-              </label>
-            </div>
-
-            <div className={styles['control-group']}>
-              <label className={styles['checkbox-label']}>
-                <input
-                  type="checkbox"
-                  checked={options.enableAnimation}
-                  onChange={(e) => setOptions({ ...options, enableAnimation: e.target.checked })}
-                  className={styles.checkbox}
-                />
-                Enable Animation
-              </label>
-            </div>
-          </div>
-
-          <div className={styles.actions}>
-            <button onClick={handleTest} className={styles['test-button']}>
-              Test Dialog
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button
+              onClick={handleConfirm}
+              className="px-6 py-3 bg-white border border-gray-200 hover:border-blue-500 hover:text-blue-600 text-gray-700 rounded-xl transition-all shadow-sm font-medium cursor-pointer"
+            >
+              Basic Confirm
             </button>
-            {lastResult && <div className={styles.result}>{lastResult}</div>}
+            <button
+              onClick={handleAsyncAlert}
+              className="px-6 py-3 bg-white border border-gray-200 hover:border-green-500 hover:text-green-600 text-gray-700 rounded-xl transition-all shadow-sm font-medium cursor-pointer"
+            >
+              Simple Alert
+            </button>
           </div>
-        </div>
+        </section>
+
+        <section className="bg-gray-900 rounded-2xl p-6 shadow-inner min-h-[200px]">
+          <h2 className="text-sm font-bold text-gray-400 mb-4 uppercase tracking-wider">
+            Activity Log
+          </h2>
+          <div className="space-y-2 font-mono text-sm max-h-60 overflow-y-auto">
+            {log.length === 0 && (
+              <span className="text-gray-600">이벤트 로그가 여기에 표시됩니다.</span>
+            )}
+            {log.map((msg, i) => (
+              <div key={i} className="flex gap-2 animate-fade-in">
+                <span className="text-gray-500">[{new Date().toLocaleTimeString()}]</span>
+                <span className="text-green-400">{msg}</span>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
-}
+};
 
 export default function App() {
   return (
-    <OkCancelProvider>
-      <InteractivePlayground />
+    <OkCancelProvider components={shadcnPreset}>
+      <DemoContent />
     </OkCancelProvider>
   );
 }

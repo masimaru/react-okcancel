@@ -1,23 +1,24 @@
-# react-okcancel
+# @pop-kit/okcancel
 
-[![npm version](https://badge.fury.io/js/react-okcancel.svg)](https://www.npmjs.com/package/react-okcancel)
+[![npm version](https://badge.fury.io/js/@pop-kit/okcancel.svg)](https://www.npmjs.com/package/@pop-kit/okcancel)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=flat&logo=stackblitz)](https://stackblitz.com/edit/vitejs-vite-wszi61bn?file=src%2FApp.tsx)
 
-**React + TypeScript 기반의 경량 모달(dialog) 라이브러리**입니다.
-`confirm`, `alert`를 Promise 기반으로 간단히 호출할 수 있으며,
-CSS 변수로 스타일을 커스터마이징할 수 있습니다.
+**React + TypeScript 기반의 비동기 UI 인터랙션 라이브러리 (Headless & Logic-First)**입니다.
+`confirm`, `alert` 뿐만 아니라 다양한 오버레이(Sheet, Toast 등)를 `await` 함수 호출로 제어할 수 있습니다.
 
 ## ✨ 주요 특징
 
-- **Promise 기반 함수 호출** - 직관적인 사용법과 결과 처리
-- **간편한 커스터마이징** - CSS 변수를 통한 테마 제어
-- **TypeScript 지원** - 타입 안전성과 IntelliSense 제공
+- **Promise 기반 로직** - `await confirm()` 한 줄로 복잡한 상태 관리 대체
+- **Headless 아키텍처** - UI와 로직의 완전한 분리, Shadcn/MUI 등 어떤 스타일과도 호환
+- **DX (개발자 경험) 중심** - 자동 로딩 상태 관리, TypeScript 지원
+- **AI-Native** - Cursor, Copilot 등 AI가 코드를 작성하기 쉬운 구조
+- **Variant 지원** - `confirm.destructive()`, `alert.success()` 등 다양한 스타일 정의 가능
 
 ## 📦 설치
 
 ```bash
-npm install react-okcancel
+npm install @pop-kit/okcancel
 ```
 
 ## 🎮 Live Demo
@@ -27,7 +28,7 @@ npm install react-okcancel
 ## 🚀 빠른 시작
 
 ```tsx
-import { OkCancelProvider, useOkCancel } from 'react-okcancel';
+import { OkCancelProvider, useOkCancel, defaultPreset } from '@pop-kit/okcancel';
 
 function MyComponent() {
   const { confirm, alert } = useOkCancel();
@@ -41,7 +42,6 @@ function MyComponent() {
     });
 
     if (confirmed) {
-      // 삭제 로직
       await alert({
         title: '완료',
         description: '항목이 성공적으로 삭제되었습니다.',
@@ -54,10 +54,75 @@ function MyComponent() {
 
 function App() {
   return (
-    <OkCancelProvider>
+    // defaultPreset을 사용하여 기본 UI 제공
+    <OkCancelProvider components={defaultPreset}>
       <MyComponent />
     </OkCancelProvider>
   );
+}
+```
+
+## 📖 고급 사용법: Variants (테마/스타일 확장)
+
+다양한 상황에 맞는 다이얼로그 스타일을 미리 정의하고 사용할 수 있습니다.
+
+### 1. 컴포넌트 정의
+
+```tsx
+import { ConfirmDialogProps, OkCancelProvider } from '@pop-kit/okcancel';
+import { defaultPreset } from '@pop-kit/okcancel';
+
+// 1. 빨간색 삭제 전용 다이얼로그
+function DestructiveConfirm({ title, description, onConfirm, onCancel }: ConfirmDialogProps) {
+  return (
+    <div className="bg-red-50 border-red-500 border p-4 rounded">
+      <h3 className="text-red-700 font-bold">{title}</h3>
+      <p>{description}</p>
+      <button onClick={onCancel}>취소</button>
+      <button onClick={onConfirm} className="bg-red-600 text-white">
+        삭제
+      </button>
+    </div>
+  );
+}
+
+// 2. 컴포넌트 맵 구성 (as const 필수!)
+const components = {
+  confirm: {
+    default: defaultPreset.confirm,
+    destructive: DestructiveConfirm, // variant 추가
+  },
+  alert: defaultPreset.alert,
+} as const;
+
+// 3. Provider에 주입
+function App() {
+  return (
+    <OkCancelProvider components={components}>
+      <AppContent />
+    </OkCancelProvider>
+  );
+}
+```
+
+### 2. 사용 (IntelliSense 지원)
+
+```tsx
+function AppContent() {
+  // 제네릭으로 컴포넌트 타입 전달 (선택 사항이지만 권장)
+  const { confirm } = useOkCancel<typeof components>();
+
+  const handleDelete = async () => {
+    // 자동으로 .destructive()가 자동완성됩니다!
+    const ok = await confirm.destructive({
+      title: '정말 삭제하시겠습니까?',
+      description: '돌이킬 수 없습니다!',
+    });
+
+    if (ok) {
+      // ...
+    }
+  };
 }
 ```
 
@@ -69,16 +134,16 @@ function App() {
 
 #### 옵션
 
-| 옵션                | 타입        | 기본값    | 설명                        |
-| ------------------- | ----------- | --------- | --------------------------- |
-| `title`             | `ReactNode` | -         | 다이얼로그 제목             |
-| `description`       | `ReactNode` | -         | 다이얼로그 내용/메시지      |
-| `confirmText`       | `ReactNode` | `'확인'`  | 확인 버튼 텍스트            |
-| `cancelText`        | `ReactNode` | `'취소'`  | 취소 버튼 텍스트            |
-| `canCloseOnOverlay` | `boolean`   | `true`    | 오버레이 클릭으로 닫기 허용 |
-| `canCloseOnEsc`     | `boolean`   | `true`    | Escape 키로 닫기 허용       |
-| `showCloseButton`   | `boolean`   | `false`   | 오른쪽 상단 X 버튼 표시     |
-| `enableAnimation`   | `boolean`   | `true`    | 다이얼로그 슬라이드 애니메이션 활성화 |
+| 옵션                | 타입        | 기본값   | 설명                                  |
+| ------------------- | ----------- | -------- | ------------------------------------- |
+| `title`             | `ReactNode` | -        | 다이얼로그 제목                       |
+| `description`       | `ReactNode` | -        | 다이얼로그 내용/메시지                |
+| `confirmText`       | `ReactNode` | `'확인'` | 확인 버튼 텍스트                      |
+| `cancelText`        | `ReactNode` | `'취소'` | 취소 버튼 텍스트                      |
+| `canCloseOnOverlay` | `boolean`   | `true`   | 오버레이 클릭으로 닫기 허용           |
+| `canCloseOnEsc`     | `boolean`   | `true`   | Escape 키로 닫기 허용                 |
+| `showCloseButton`   | `boolean`   | `false`  | 오른쪽 상단 X 버튼 표시               |
+| `enableAnimation`   | `boolean`   | `true`   | 다이얼로그 슬라이드 애니메이션 활성화 |
 
 #### 반환값
 
@@ -118,15 +183,15 @@ if (result) {
 
 #### 옵션
 
-| 옵션                | 타입        | 기본값    | 설명                        |
-| ------------------- | ----------- | --------- | --------------------------- |
-| `title`             | `ReactNode` | -         | 다이얼로그 제목             |
-| `description`       | `ReactNode` | -         | 다이얼로그 내용/메시지      |
-| `confirmText`       | `ReactNode` | `'확인'`  | 확인 버튼 텍스트            |
-| `canCloseOnOverlay` | `boolean`   | `true`    | 오버레이 클릭으로 닫기 허용 |
-| `canCloseOnEsc`     | `boolean`   | `true`    | Escape 키로 닫기 허용       |
-| `showCloseButton`   | `boolean`   | `false`   | 오른쪽 상단 X 버튼 표시     |
-| `enableAnimation`   | `boolean`   | `true`    | 다이얼로그 슬라이드 애니메이션 활성화 |
+| 옵션                | 타입        | 기본값   | 설명                                  |
+| ------------------- | ----------- | -------- | ------------------------------------- |
+| `title`             | `ReactNode` | -        | 다이얼로그 제목                       |
+| `description`       | `ReactNode` | -        | 다이얼로그 내용/메시지                |
+| `confirmText`       | `ReactNode` | `'확인'` | 확인 버튼 텍스트                      |
+| `canCloseOnOverlay` | `boolean`   | `true`   | 오버레이 클릭으로 닫기 허용           |
+| `canCloseOnEsc`     | `boolean`   | `true`   | Escape 키로 닫기 허용                 |
+| `showCloseButton`   | `boolean`   | `false`  | 오른쪽 상단 X 버튼 표시               |
+| `enableAnimation`   | `boolean`   | `true`   | 다이얼로그 슬라이드 애니메이션 활성화 |
 
 #### 반환값
 
